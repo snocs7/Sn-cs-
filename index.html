@@ -1,295 +1,1159 @@
 <!DOCTYPE html>
+
+<!--
+  بداية صفحة HTML.
+
+  lang="en"
+  معناها أن لغة الصفحة الأساسية إنجليزية.
+-->
 <html lang="en">
+
 <head>
+
+  <!--
+    تحديد ترميز الحروف.
+    UTF-8 يسمح باستخدام العربي والإنجليزي والإيموجي وغيرها.
+  -->
   <meta charset="UTF-8" />
+
+
+  <!--
+    مهم جدًا للموبايل.
+
+    يجعل الصفحة تتناسب مع عرض شاشة الهاتف.
+  -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aura | Links</title>
 
-  <!-- Tailwind CSS CDN -->
+
+  <!--
+    اسم الموقع الذي يظهر في تبويب المتصفح.
+  -->
+  <title>Snöcs</title>
+
+
+  <!-- ==================================================
+       Tailwind CSS
+       ==================================================
+
+       Tailwind مكتبة CSS تساعد في تصميم الصفحة
+       باستخدام Classes جاهزة داخل HTML.
+
+       مثال:
+
+       max-w-md
+       px-6
+       py-12
+       text-center
+  -->
+
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Google Fonts: Inter for clean typography -->
+
+  <!-- ==================================================
+       Font Awesome
+       ==================================================
+
+       مكتبة الأيقونات.
+
+       هي المسؤولة عن:
+
+       WhatsApp
+       Instagram
+       Store
+       وغيرها.
+  -->
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+
+  <!-- ==================================================
+       Google Fonts
+       ==================================================
+
+       تحميل خط Inter من Google.
+  -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+
+  <!-- ==================================================
+       Tailwind Configuration
+       ==================================================
+
+       هنا بنحدد ألوان البراند والخط.
+  -->
 
   <script>
+
     tailwind.config = {
+
       theme: {
+
         extend: {
+
           colors: {
+
+            /*
+              اللون الأخضر الأساسي.
+            */
+
             brandGreen: '#72BA27',
+
+
+            /*
+              اللون الأخضر الداكن للخلفية.
+            */
+
             brandDark: '#1F301F',
+
+
+            /*
+              اللون الأبيض.
+            */
+
             brandWhite: '#FFFFFF',
+
           },
+
+
+          /*
+            تحديد خط Inter كخط أساسي.
+          */
+
           fontFamily: {
+
             sans: ['Inter', 'sans-serif'],
+
           },
+
         },
+
       },
+
     };
+
   </script>
 
+
+  <!-- ==================================================
+       CSS
+       ==================================================
+
+       كل التصميم الخاص بالموقع موجود هنا.
+
+       لا تحتاج ملف CSS خارجي.
+  -->
+
   <style>
-    /* Base Body Styling with Brand Dark Color and Blurry Background Image */
+
+
+    /* ==================================================
+       BODY
+       ==================================================
+
+       تصميم الصفحة بالكامل.
+    */
+
     body {
+
+      /* لون الخلفية الأساسي */
+
       background-color: #1F301F;
+
+
+      /*
+        صورة الخلفية.
+
+        يمكنك تغيير الرابط الموجود داخل url()
+        إذا أردت صورة أخرى.
+      */
+
       background-image: url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1000&auto=format&fit=crop');
+
+
+      /*
+        جعل الصورة تغطي الشاشة بالكامل.
+      */
+
       background-size: cover;
+
+
+      /*
+        وضع الصورة في المنتصف.
+      */
+
       background-position: center;
+
+
+      /*
+        تجعل الخلفية ثابتة أثناء Scroll.
+      */
+
       background-attachment: fixed;
+
+
+      /* لون النص الأساسي */
+
       color: #FFFFFF;
+
+
+      /* نوع الخط */
+
       font-family: 'Inter', sans-serif;
+
+
+      /* إزالة المسافات الافتراضية */
+
       margin: 0;
+
       padding: 0;
+
+
+      /* أقل ارتفاع للصفحة */
+
       min-height: 100vh;
+
+
+      /* تحسين ظهور الخط */
+
       -webkit-font-smoothing: antialiased;
+
+
+      /* مهم لبعض العناصر */
+
       position: relative;
+
     }
 
-    /* Heavy blur overlay integrated with Brand Dark Color (#1F301F) */
+
+    /* ==================================================
+       BACKGROUND BLUR OVERLAY
+       ==================================================
+
+       طبقة فوق الخلفية تعمل تأثير Blur وشفافية.
+    */
+
     .bg-blur-overlay {
+
+      /* تثبيت الطبقة على الشاشة */
+
       position: fixed;
+
+
+      /* تغطية الشاشة بالكامل */
+
       top: 0;
+
       left: 0;
+
       right: 0;
+
       bottom: 0;
-      background: linear-gradient(135deg, rgba(31, 48, 31, 0.85) 0%, rgba(31, 48, 31, 0.6) 100%);
+
+
+      /*
+        طبقة Gradient خضراء شفافة.
+      */
+
+      background: linear-gradient(
+        135deg,
+        rgba(31, 48, 31, 0.85) 0%,
+        rgba(31, 48, 31, 0.6) 100%
+      );
+
+
+      /*
+        تأثير Blur قوي.
+      */
+
       backdrop-filter: blur(25px);
+
       -webkit-backdrop-filter: blur(25px);
+
+
+      /*
+        وضع الطبقة خلف محتوى الموقع.
+      */
+
       z-index: 0;
+
     }
 
-    /* Splash Screen Styling */
+
+    /* ==================================================
+       SPLASH SCREEN
+       ==================================================
+
+       الشاشة التي تظهر لحظة فتح الموقع.
+    */
+
     #splash-screen {
+
       position: fixed;
+
       top: 0;
+
       left: 0;
+
       width: 100%;
+
       height: 100%;
+
+
+      /* لون شاشة البداية */
+
       background-color: #1F301F;
+
+
+      /*
+        وضع اللوجو في منتصف الشاشة.
+      */
+
       display: flex;
+
       flex-direction: column;
+
       align-items: center;
+
       justify-content: center;
+
+
+      /*
+        تجعل Splash فوق كل شيء.
+      */
+
       z-index: 9999;
-      transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+
+
+      /*
+        Animation الخاصة بالاختفاء.
+      */
+
+      transition:
+        opacity 0.6s ease-out,
+        visibility 0.6s ease-out;
+
     }
+
+
+    /* ==================================================
+       SPLASH LOGO
+       ================================================== */
 
     .splash-logo {
-      width: 90px;
+
+      /*
+        حجم اللوجو في شاشة البداية.
+      */
+
+      width: 250px;
+
       height: auto;
-      animation: splashPulse 1.5s infinite ease-in-out;
+
+
+      /*
+        تشغيل Animation اسمها splashPulse.
+      */
+
+      animation:
+        splashPulse 1.5s infinite ease-in-out;
+
     }
+
+
+    /* ==================================================
+       SPLASH ANIMATION
+       ================================================== */
 
     @keyframes splashPulse {
-      0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.12); opacity: 1; }
-    }
 
-    /* Pill-shaped Glass Button with Interactive Hover/Touch effects */
-    .pill-button {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 9999px;
-      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
+      /*
+        بداية ونهاية الحركة.
+      */
 
-    /* Hover effect for desktop */
-    @media (hover: hover) {
-      .pill-button:hover {
-        transform: translateY(-4px) scale(1.02);
-        background: rgba(255, 255, 255, 0.18);
-        border-color: rgba(114, 186, 39, 0.6);
-        box-shadow: 0 10px 25px -5px rgba(31, 48, 31, 0.5), 0 0 15px rgba(114, 186, 39, 0.25);
+      0%,
+      100% {
+
+        transform: scale(1);
+
+        opacity: 0.8;
+
       }
+
+
+      /*
+        منتصف الحركة.
+
+        اللوجو يكبر قليلًا.
+      */
+
+      50% {
+
+        transform: scale(1.12);
+
+        opacity: 1;
+
+      }
+
     }
 
-    /* Active/Touch interaction */
-    .pill-button:active {
-      transform: scale(0.96) translateY(0);
-      background: rgba(255, 255, 255, 0.25);
-      box-shadow: none;
-      transition: all 0.1s ease;
-    }
 
-    /* Typography for buttons */
-    .btn-text-primary {
-      color: #72BA27;
-      font-weight: 600;
-      line-height: 1.2;
-    }
-    
-    .btn-text-secondary {
-      color: rgba(114, 186, 39, 0.75);
-      font-size: 0.75rem;
-      margin-top: 2px;
-    }
+    /* ==================================================
+       BUTTON DESIGN
+       ==================================================
 
-    /* Icon specific styling */
-    .btn-icon {
-      color: #72BA27;
-      font-size: 1.15rem;
+       هذا هو شكل جميع أزرار الروابط.
+    */
+
+    .pill-button {
+
+      /*
+        خلفية شفافة.
+      */
+
+      background: rgba(255, 255, 255, 0.12);
+
+
+      /*
+        Glass Effect.
+      */
+
+      backdrop-filter: blur(12px);
+
+      -webkit-backdrop-filter: blur(12px);
+
+
+      /*
+        حدود شفافة.
+      */
+
+      border: 1px solid rgba(255, 255, 255, 0.15);
+
+
+      /*
+        يجعل الزر دائريًا من الأطراف.
+      */
+
+      border-radius: 9999px;
+
+
+      /*
+        سرعة الحركة عند Hover.
+      */
+
+      transition:
+        all 0.4s cubic-bezier(
+          0.25,
+          1,
+          0.5,
+          1
+        );
+
+
+      position: relative;
+
+      overflow: hidden;
+
       display: flex;
+
       align-items: center;
-      justify-content: center;
-      transition: transform 0.3s ease;
+
+      cursor: pointer;
+
     }
+
+
+    /* ==================================================
+       HOVER
+       ==================================================
+
+       التأثير عند مرور الماوس على الكمبيوتر.
+    */
+
+    @media (hover: hover) {
+
+      .pill-button:hover {
+
+        /*
+          الزر يطلع لأعلى قليلًا.
+        */
+
+        transform:
+          translateY(-4px)
+          scale(1.02);
+
+
+        /*
+          زيادة شفافية الخلفية.
+        */
+
+        background:
+          rgba(255, 255, 255, 0.18);
+
+
+        /*
+          تغيير لون الحدود للأخضر.
+        */
+
+        border-color:
+          rgba(114, 186, 39, 0.6);
+
+
+        /*
+          Shadow حول الزر.
+        */
+
+        box-shadow:
+          0 10px 25px -5px
+          rgba(31, 48, 31, 0.5),
+
+          0 0 15px
+          rgba(114, 186, 39, 0.25);
+
+      }
+
+    }
+
+
+    /* ==================================================
+       TOUCH / CLICK
+       ================================================== */
+
+    .pill-button:active {
+
+      /*
+        تصغير الزر عند الضغط.
+      */
+
+      transform:
+        scale(0.96)
+        translateY(0);
+
+
+      background:
+        rgba(255, 255, 255, 0.25);
+
+
+      box-shadow: none;
+
+
+      transition:
+        all 0.1s ease;
+
+    }
+
+
+    /* ==================================================
+       BUTTON MAIN TEXT
+       ================================================== */
+
+    .btn-text-primary {
+
+      /*
+        لون النص الأساسي.
+      */
+
+      color: #72BA27;
+
+
+      /*
+        سمك الخط.
+      */
+
+      font-weight: 600;
+
+
+      line-height: 1.2;
+
+    }
+
+
+    /* ==================================================
+       BUTTON SECONDARY TEXT
+       ================================================== */
+
+    .btn-text-secondary {
+
+      /*
+        لون الوصف الصغير.
+      */
+
+      color:
+        rgba(114, 186, 39, 0.75);
+
+
+      /*
+        حجم الخط.
+      */
+
+      font-size: 0.75rem;
+
+
+      /*
+        مسافة صغيرة أعلى النص.
+      */
+
+      margin-top: 2px;
+
+    }
+
+
+    /* ==================================================
+       ICON
+       ================================================== */
+
+    .btn-icon {
+
+      /*
+        لون الأيقونة.
+      */
+
+      color: #72BA27;
+
+
+      /*
+        حجم الأيقونة.
+      */
+
+      font-size: 1.15rem;
+
+
+      /*
+        وضع الأيقونة في المنتصف.
+      */
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+
+      /*
+        حركة الأيقونة.
+      */
+
+      transition:
+        transform 0.3s ease;
+
+    }
+
+
+    /* ==================================================
+       ICON HOVER
+       ================================================== */
 
     .pill-button:hover .btn-icon {
-      transform: scale(1.15) rotate(-5deg);
+
+      /*
+        تكبير الأيقونة ولفها قليلًا.
+      */
+
+      transform:
+        scale(1.15)
+        rotate(-5deg);
+
+
+      /*
+        تغيير لون الأيقونة للأبيض.
+      */
+
       color: #FFFFFF;
+
     }
 
-    /* Mascot floating animation */
+
+    /* ==================================================
+       MASCOT FLOATING ANIMATION
+       ================================================== */
+
     @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-      100% { transform: translateY(0px); }
-    }
-    
-    .mascot-img {
-      animation: float 6s ease-in-out infinite;
+
+      /*
+        بداية الحركة.
+      */
+
+      0% {
+
+        transform: translateY(0px);
+
+      }
+
+
+      /*
+        منتصف الحركة.
+      */
+
+      50% {
+
+        transform: translateY(-12px);
+
+      }
+
+
+      /*
+        نهاية الحركة.
+      */
+
+      100% {
+
+        transform: translateY(0px);
+
+      }
+
     }
 
-    /* Title subtle pulsing/breathing animation */
-    @keyframes titlePulse {
-      0% { transform: scale(1); opacity: 0.9; text-shadow: 0 0 0px rgba(114, 186, 39, 0); }
-      50% { transform: scale(1.03); opacity: 1; text-shadow: 0 0 15px rgba(114, 186, 39, 0.4); }
-      100% { transform: scale(1); opacity: 0.9; text-shadow: 0 0 0px rgba(114, 186, 39, 0); }
+
+    /*
+      تطبيق الحركة على صورة الـ Mascot.
+    */
+
+    .mascot-img {
+
+      animation:
+        float 6s ease-in-out infinite;
+
     }
+
+
+    /* ==================================================
+       TITLE ANIMATION
+       ================================================== */
+
+    @keyframes titlePulse {
+
+      0% {
+
+        transform: scale(1);
+
+        opacity: 0.9;
+
+        text-shadow:
+          0 0 0px
+          rgba(114, 186, 39, 0);
+
+      }
+
+
+      50% {
+
+        transform: scale(1.03);
+
+        opacity: 1;
+
+        text-shadow:
+          0 0 15px
+          rgba(114, 186, 39, 0.4);
+
+      }
+
+
+      100% {
+
+        transform: scale(1);
+
+        opacity: 0.9;
+
+        text-shadow:
+          0 0 0px
+          rgba(114, 186, 39, 0);
+
+      }
+
+    }
+
+
+    /*
+      تطبيق Animation على اسم Aura.
+    */
 
     .animated-title {
+
       display: inline-block;
-      animation: titlePulse 4s ease-in-out infinite;
+
+      animation:
+        titlePulse 4s ease-in-out infinite;
+
     }
+
   </style>
+
 </head>
 
-<body class="relative flex flex-col items-center min-h-screen selection:bg-brandGreen selection:text-brandDark">
 
-  <!-- Splash Screen (Loading Screen with Logo) -->
+<!-- ==================================================
+     BODY
+     ==================================================
+
+     كل المحتوى الذي يظهر للمستخدم.
+-->
+
+<body
+  class="relative flex flex-col items-center min-h-screen selection:bg-brandGreen selection:text-brandDark"
+>
+
+
+  <!-- ==================================================
+       SPLASH SCREEN
+       ==================================================
+
+       شاشة البداية التي تظهر عند فتح الموقع.
+  -->
+
   <div id="splash-screen">
-    <img src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" alt="Aura Logo" class="splash-logo" />
-    <span class="text-brandGreen text-sm font-semibold tracking-widest mt-4 uppercase animate-pulse">AURA</span>
+
+
+    <!--
+      صورة اللوجو.
+
+      لو عايز تغير اللوجو:
+      غيّر الرابط الموجود في src.
+    -->
+
+    <img
+      src="https://cdn.discordapp.com/attachments/1535432174516310091/1547341843782574190/Logo-removebg-preview_3.png?ex=6aa311e3&is=6aa1c063&hm=d95e9263252a2e3c9ab971be15401bb735887c43cbac9db66558f4d30e4b3f38"
+      alt="Snöcs"
+      class="splash-logo"
+    />
+
+
+    <!--
+      اسم البراند الذي يظهر تحت اللوجو.
+    -->
+
+    <span
+      class="text-brandGreen text-sm font-semibold tracking-widest mt-4 uppercase animate-pulse"
+    >
+      
+    </span>
+
   </div>
 
-  <!-- Blurry Background Overlay -->
+
+  <!-- ==================================================
+       BLUR BACKGROUND
+       ================================================== -->
+
   <div class="bg-blur-overlay"></div>
 
-  <!-- Main Content Container -->
-  <main class="relative z-10 w-full max-w-md mx-auto px-6 py-12 flex flex-col items-center min-h-screen justify-between">
-    
-    <!-- Top Content Group -->
+
+  <!-- ==================================================
+       MAIN CONTAINER
+       ==================================================
+
+       يحتوي على كل محتوى الموقع.
+  -->
+
+  <main
+    class="relative z-10 w-full max-w-md mx-auto px-6 py-12 flex flex-col items-center min-h-screen justify-between"
+  >
+
+
+    <!-- ==================================================
+         TOP CONTENT
+         ================================================== -->
+
     <div class="w-full flex flex-col items-center">
-      <!-- Header Section (Mascot + Title) -->
+
+
+      <!-- ==================================================
+           HEADER
+           ================================================== -->
+
       <div class="text-center w-full mb-8">
-        
-        <!-- Mascot / Hero Image -->
+
+
+        <!--
+          Mascot / الصورة الرئيسية.
+        -->
+
         <div class="mb-4 flex justify-center">
-          <img 
-            src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" 
-            alt="Aura Mascot" 
+
+          <img
+            src="https://cdn.discordapp.com/attachments/1535432174516310091/1547340567816568862/Logo-removebg-preview_1.png?ex=6aa310b3&is=6aa1bf33&hm=f1c786f7a69e56442e4e9bb7536d39772b759fd4674c5125273c46f04e7dd913"
+            alt="Snöcs"
             class="w-44 h-auto mascot-img drop-shadow-2xl opacity-95"
           />
+
         </div>
 
-        <!-- Main Brand Name with Animation -->
-        <h1 class="text-5xl font-extrabold tracking-tight text-brandWhite mb-3 drop-shadow-lg animated-title">
-          aura
+
+        <!-- ==================================================
+             BRAND NAME
+             ==================================================
+
+             اسم Aura.
+        -->
+
+        <h1
+          class="text-5xl font-extrabold tracking-tight text-brandWhite mb-3 drop-shadow-lg animated-title"
+        >
+          Snöcs
         </h1>
 
-        <!-- Description Text -->
+
+        <!-- ==================================================
+             DESCRIPTION
+             ================================================== -->
+
         <div class="text-center px-2 space-y-1.5 mt-2">
+
+
+          <!-- الجملة الأولى -->
+
           <p class="text-lg font-medium text-brandWhite drop-shadow-md">
-            Your style called. It wants Aura.
+            Your feet called. They want Snocs. 👣
           </p>
+
+
+          <!-- الجملة الثانية -->
+
           <p class="text-[15px] font-medium text-brandWhite/90 drop-shadow-md">
-            ✨ Minimal • Sustainable • Essentials •
+            Slides • Toe Slippers • Socks • Shoes
           </p>
+
+
+          <!-- الجملة الثالثة -->
+
           <p class="text-[15px] font-medium text-brandWhite/90 drop-shadow-md">
-            Fashion Comfort meets everyday style.
+            Comfort meets everyday style.
           </p>
+
         </div>
+
       </div>
 
-      <!-- Link Items List -->
+
+      <!-- ==================================================
+           LINKS LIST
+           ==================================================
+
+           هنا جميع أزرار الروابط.
+      -->
+
       <div class="w-full space-y-4 mt-2">
-        
-        <!-- WhatsApp Community Button -->
-        <a href="#" class="pill-button w-full px-6 py-4 group">
+
+
+        <!-- ==================================================
+             WHATSAPP BUTTON
+             ================================================== -->
+
+        <a
+          href="#"
+          class="pill-button w-full px-6 py-4 group"
+        >
+
+
+          <!-- أيقونة WhatsApp -->
+
           <div class="flex-shrink-0 btn-icon w-8">
+
             <i class="fa-brands fa-whatsapp"></i>
+
           </div>
-          <div class="flex-1 flex flex-col justify-center text-center pr-8">
+
+
+          <!-- النص -->
+
+          <div
+            class="flex-1 flex flex-col justify-center text-center pr-8"
+          >
+
+            <!-- عنوان الزر -->
+
             <div class="btn-text-primary text-[16px]">
               Aura New Collection - VIP
             </div>
+
+
+            <!-- وصف الزر -->
+
             <div class="btn-text-secondary">
               WhatsApp Community • Free to join
             </div>
+
           </div>
+
         </a>
 
-        <!-- Official Website Button -->
-        <a href="#" class="pill-button w-full px-6 py-4 group">
+
+        <!-- ==================================================
+             OFFICIAL WEBSITE BUTTON
+             ================================================== -->
+
+        <a
+          href="#"
+          class="pill-button w-full px-6 py-4 group"
+        >
+
+
+          <!-- أيقونة المتجر -->
+
           <div class="flex-shrink-0 btn-icon w-8">
+
             <i class="fa-solid fa-store"></i>
+
           </div>
-          <div class="flex-1 flex flex-col justify-center text-center pr-8">
+
+
+          <!-- النص -->
+
+          <div
+            class="flex-1 flex flex-col justify-center text-center pr-8"
+          >
+
+            <!-- عنوان الزر -->
+
             <div class="btn-text-primary text-[16px]">
               Shop Official Website
             </div>
+
+
+            <!-- وصف الزر -->
+
             <div class="btn-text-secondary">
               Discover our latest essentials
             </div>
+
           </div>
+
         </a>
 
-        <!-- Instagram Button -->
-        <a href="#" class="pill-button w-full px-6 py-4 group">
+
+        <!-- ==================================================
+             INSTAGRAM BUTTON
+             ================================================== -->
+
+        <a
+          href="#"
+          class="pill-button w-full px-6 py-4 group"
+        >
+
+
+          <!-- أيقونة Instagram -->
+
           <div class="flex-shrink-0 btn-icon w-8">
+
             <i class="fa-brands fa-instagram"></i>
+
           </div>
-          <div class="flex-1 flex flex-col justify-center text-center pr-8">
+
+
+          <!-- النص -->
+
+          <div
+            class="flex-1 flex flex-col justify-center text-center pr-8"
+          >
+
+            <!-- عنوان الزر -->
+
             <div class="btn-text-primary text-[16px]">
               Follow us on Instagram
             </div>
+
+
+            <!-- وصف الزر -->
+
             <div class="btn-text-secondary">
               Daily style inspiration
             </div>
+
           </div>
+
         </a>
 
+
       </div>
+
     </div>
 
-    <!-- Footer Section with DEV BY ZEYAD at the very bottom -->
+
+    <!-- ==================================================
+         FOOTER
+         ================================================== -->
+
     <footer class="mt-12 pb-4 w-full text-center">
-      <span class="text-[11px] font-bold tracking-widest text-brandWhite/70 uppercase">DEV BY ZEYAD</span>
+
+
+      <!--
+        اسم المطور.
+      -->
+
+      <span
+        class="text-[11px] font-bold tracking-widest text-brandWhite/70 uppercase"
+      >
+        DEV BY ZEYAD
+      </span>
+
     </footer>
+
 
   </main>
 
-  <!-- JavaScript to hide splash screen smoothly on load -->
+
+  <!-- ==================================================
+       JAVASCRIPT
+       ==================================================
+
+       مسؤول عن إخفاء شاشة البداية بعد تحميل الموقع.
+  -->
+
   <script>
+
+
+    /*
+      انتظار انتهاء تحميل الصفحة بالكامل.
+    */
+
     window.addEventListener('load', function() {
-      const splash = document.getElementById('splash-screen');
+
+
+      /*
+        العثور على Splash Screen.
+      */
+
+      const splash =
+        document.getElementById('splash-screen');
+
+
+      /*
+        انتظار 400ms ثم إخفاء الشاشة.
+      */
+
       setTimeout(() => {
+
+
+        /*
+          جعل الشفافية صفر.
+        */
+
         splash.style.opacity = '0';
+
+
+        /*
+          إخفاء العنصر.
+        */
+
         splash.style.visibility = 'hidden';
-      }, 400); // 400ms delay for smooth transition effect
+
+
+      }, 400);
+
     });
+
   </script>
+
+
 </body>
+
 </html>
