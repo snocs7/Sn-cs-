@@ -1,268 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Aura | Links</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
+  
   <!-- Font Awesome Icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Inter for clean typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Tailwind Configuration -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            brandGreen: "#72BA27",
-            brandDark: "#1F301F",
-            brandWhite: "#FFFFFF",
+            brandGreen: '#72BA27',
+            brandDark: '#1F301F',
+            brandWhite: '#FFFFFF',
           },
-
           fontFamily: {
-            sans: ["Inter", "sans-serif"],
+            sans: ['Inter', 'sans-serif'],
           },
         },
       },
     };
   </script>
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css" />
-</head>
+  <style>
+    /* Base Body Styling with Brand Dark Color and Blurry Background Image */
+    body {
+      background-color: #1F301F;
+      background-image: url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1000&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
 
+    /* Heavy blur overlay integrated with Brand Dark Color (#1F301F) */
+    .bg-blur-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(31, 48, 31, 0.85) 0%, rgba(31, 48, 31, 0.6) 100%);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 0;
+    }
+
+    /* Splash Screen Styling */
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #1F301F;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+    }
+
+    .splash-logo {
+      width: 90px;
+      height: auto;
+      animation: splashPulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes splashPulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+
+    /* Pill-shaped Glass Button with Interactive Hover/Touch effects */
+    .pill-button {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    /* Hover effect for desktop */
+    @media (hover: hover) {
+      .pill-button:hover {
+        transform: translateY(-4px) scale(1.02);
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(114, 186, 39, 0.6);
+        box-shadow: 0 10px 25px -5px rgba(31, 48, 31, 0.5), 0 0 15px rgba(114, 186, 39, 0.25);
+      }
+    }
+
+    /* Active/Touch interaction */
+    .pill-button:active {
+      transform: scale(0.96) translateY(0);
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: none;
+      transition: all 0.1s ease;
+    }
+
+    /* Typography for buttons */
+    .btn-text-primary {
+      color: #72BA27;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    
+    .btn-text-secondary {
+      color: rgba(114, 186, 39, 0.75);
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+
+    /* Icon specific styling */
+    .btn-icon {
+      color: #72BA27;
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .pill-button:hover .btn-icon {
+      transform: scale(1.15) rotate(-5deg);
+      color: #FFFFFF;
+    }
+
+    /* Mascot floating animation */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .mascot-img {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* Title subtle pulsing/breathing animation */
+    @keyframes titlePulse {
+      0% { transform: scale(1); opacity: 0.9; text-shadow: 0 0 0px rgba(114, 186, 39, 0); }
+      50% { transform: scale(1.03); opacity: 1; text-shadow: 0 0 15px rgba(114, 186, 39, 0.4); }
+      100% { transform: scale(1); opacity: 0.9; text-shadow: 0 0 0px rgba(114, 186, 39, 0); }
+    }
+
+    .animated-title {
+      display: inline-block;
+      animation: titlePulse 4s ease-in-out infinite;
+    }
+  </style>
+</head>
 
 <body class="relative flex flex-col items-center min-h-screen selection:bg-brandGreen selection:text-brandDark">
 
-  <!-- =========================
-       Splash Screen
-  ========================== -->
-
+  <!-- Splash Screen (Loading Screen with Logo) -->
   <div id="splash-screen">
-
-    <img
-      src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png"
-      alt="Aura Logo"
-      class="splash-logo"
-    />
-
-    <span
-      class="text-brandGreen text-sm font-semibold tracking-widest mt-4 uppercase animate-pulse"
-    >
-      AURA
-    </span>
-
+    <img src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" alt="Aura Logo" class="splash-logo" />
+    <span class="text-brandGreen text-sm font-semibold tracking-widest mt-4 uppercase animate-pulse">AURA</span>
   </div>
 
-
-  <!-- =========================
-       Background Overlay
-  ========================== -->
-
+  <!-- Blurry Background Overlay -->
   <div class="bg-blur-overlay"></div>
 
-
-  <!-- =========================
-       Main Content
-  ========================== -->
-
-  <main
-    class="relative z-10 w-full max-w-md mx-auto px-6 py-12 flex flex-col items-center min-h-screen justify-between"
-  >
-
+  <!-- Main Content Container -->
+  <main class="relative z-10 w-full max-w-md mx-auto px-6 py-12 flex flex-col items-center min-h-screen justify-between">
+    
     <!-- Top Content Group -->
-
     <div class="w-full flex flex-col items-center">
-
-
-      <!-- =========================
-           Header
-      ========================== -->
-
+      <!-- Header Section (Mascot + Title) -->
       <div class="text-center w-full mb-8">
-
-        <!-- Mascot -->
-
+        
+        <!-- Mascot / Hero Image -->
         <div class="mb-4 flex justify-center">
-
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png"
-            alt="Aura Mascot"
+          <img 
+            src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" 
+            alt="Aura Mascot" 
             class="w-44 h-auto mascot-img drop-shadow-2xl opacity-95"
           />
-
         </div>
 
-
-        <!-- Brand Name -->
-
-        <h1
-          class="text-5xl font-extrabold tracking-tight text-brandWhite mb-3 drop-shadow-lg animated-title"
-        >
+        <!-- Main Brand Name with Animation -->
+        <h1 class="text-5xl font-extrabold tracking-tight text-brandWhite mb-3 drop-shadow-lg animated-title">
           aura
         </h1>
 
-
-        <!-- Description -->
-
+        <!-- Description Text -->
         <div class="text-center px-2 space-y-1.5 mt-2">
-
           <p class="text-lg font-medium text-brandWhite drop-shadow-md">
             Your style called. It wants Aura.
           </p>
-
           <p class="text-[15px] font-medium text-brandWhite/90 drop-shadow-md">
             ✨ Minimal • Sustainable • Essentials •
           </p>
-
           <p class="text-[15px] font-medium text-brandWhite/90 drop-shadow-md">
             Fashion Comfort meets everyday style.
           </p>
-
         </div>
-
       </div>
 
-
-      <!-- =========================
-           Links
-      ========================== -->
-
+      <!-- Link Items List -->
       <div class="w-full space-y-4 mt-2">
-
-
-        <!-- WhatsApp -->
-
-        <a
-          href="#"
-          target="_blank"
-          class="pill-button w-full px-6 py-4 group"
-        >
-
+        
+        <!-- WhatsApp Community Button -->
+        <a href="#" class="pill-button w-full px-6 py-4 group">
           <div class="flex-shrink-0 btn-icon w-8">
-
             <i class="fa-brands fa-whatsapp"></i>
-
           </div>
-
-
           <div class="flex-1 flex flex-col justify-center text-center pr-8">
-
             <div class="btn-text-primary text-[16px]">
               Aura New Collection - VIP
             </div>
-
             <div class="btn-text-secondary">
               WhatsApp Community • Free to join
             </div>
-
           </div>
-
         </a>
 
-
-        <!-- Official Website -->
-
-        <a
-          href="#"
-          target="_blank"
-          class="pill-button w-full px-6 py-4 group"
-        >
-
+        <!-- Official Website Button -->
+        <a href="#" class="pill-button w-full px-6 py-4 group">
           <div class="flex-shrink-0 btn-icon w-8">
-
             <i class="fa-solid fa-store"></i>
-
           </div>
-
-
           <div class="flex-1 flex flex-col justify-center text-center pr-8">
-
             <div class="btn-text-primary text-[16px]">
               Shop Official Website
             </div>
-
             <div class="btn-text-secondary">
               Discover our latest essentials
             </div>
-
           </div>
-
         </a>
 
-
-        <!-- Instagram -->
-
-        <a
-          href="#"
-          target="_blank"
-          class="pill-button w-full px-6 py-4 group"
-        >
-
+        <!-- Instagram Button -->
+        <a href="#" class="pill-button w-full px-6 py-4 group">
           <div class="flex-shrink-0 btn-icon w-8">
-
             <i class="fa-brands fa-instagram"></i>
-
           </div>
-
-
           <div class="flex-1 flex flex-col justify-center text-center pr-8">
-
             <div class="btn-text-primary text-[16px]">
               Follow us on Instagram
             </div>
-
             <div class="btn-text-secondary">
               Daily style inspiration
             </div>
-
           </div>
-
         </a>
 
       </div>
-
     </div>
 
-
-    <!-- =========================
-         Footer
-    ========================== -->
-
+    <!-- Footer Section with DEV BY ZEYAD at the very bottom -->
     <footer class="mt-12 pb-4 w-full text-center">
-
-      <span
-        class="text-[11px] font-bold tracking-widest text-brandWhite/70 uppercase"
-      >
-        DEV BY ZEYAD
-      </span>
-
+      <span class="text-[11px] font-bold tracking-widest text-brandWhite/70 uppercase">DEV BY ZEYAD</span>
     </footer>
 
   </main>
 
-
-  <!-- JavaScript -->
-  <script src="script.js"></script>
-
+  <!-- JavaScript to hide splash screen smoothly on load -->
+  <script>
+    window.addEventListener('load', function() {
+      const splash = document.getElementById('splash-screen');
+      setTimeout(() => {
+        splash.style.opacity = '0';
+        splash.style.visibility = 'hidden';
+      }, 400); // 400ms delay for smooth transition effect
+    });
+  </script>
 </body>
-
 </html>
