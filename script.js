@@ -1,22 +1,19 @@
-```javascript
-// رسالة في Console للتأكد أن JavaScript يعمل
-console.log("SNOCS7 website loaded successfully");
+/* =========================
+   Splash Screen
+========================= */
+
+window.addEventListener("load", function () {
+
+  const splash =
+    document.getElementById("splash-screen");
 
 
-// تأثير بسيط عند الضغط على أي رابط
+  setTimeout(function () {
 
-const links = document.querySelectorAll(".link");
+    splash.style.opacity = "0";
 
-links.forEach(function(link) {
+    splash.style.visibility = "hidden";
 
-    link.addEventListener("click", function() {
-
-        console.log(
-            "Opening:",
-            link.innerText.trim()
-        );
-
-    });
+  }, 400);
 
 });
-```
