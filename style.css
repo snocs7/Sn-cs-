@@ -1,89 +1,236 @@
+```css
+/* =========================
+   General
+========================= */
+
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
     min-height: 100vh;
 
-    font-family: Arial, sans-serif;
+    font-family:
+        Arial,
+        Tahoma,
+        sans-serif;
 
     background:
-        linear-gradient(135deg, #111827, #1e293b);
+        radial-gradient(
+            circle at top,
+            #293548,
+            #0f172a 55%,
+            #020617
+        );
 
-    color: white;
+    color: #ffffff;
 
     display: flex;
     justify-content: center;
-    align-items: center;
 
-    padding: 30px 15px;
+    padding: 35px 15px;
 }
 
-.container {
+
+/* =========================
+   Main Container
+========================= */
+
+.page {
     width: 100%;
     max-width: 500px;
 
     text-align: center;
 }
 
+
+/* =========================
+   Profile
+========================= */
+
+.profile {
+    margin-bottom: 30px;
+}
+
 .logo {
-    width: 110px;
-    height: 110px;
+    width: 115px;
+    height: 115px;
 
     object-fit: cover;
 
     border-radius: 50%;
 
-    margin-bottom: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+
+    margin-bottom: 18px;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.35);
 }
 
-h1 {
-    font-size: 30px;
-    margin-bottom: 10px;
+.profile h1 {
+    font-size: 32px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 8px;
 }
 
-.description {
+.profile p {
     color: #cbd5e1;
-    margin-bottom: 30px;
+
+    font-size: 15px;
 }
+
+
+/* =========================
+   Links
+========================= */
 
 .links {
     display: flex;
+
     flex-direction: column;
-    gap: 15px;
+
+    gap: 14px;
 }
 
 .link {
-    display: block;
-
     width: 100%;
 
-    padding: 17px 20px;
+    min-height: 62px;
 
-    border-radius: 14px;
+    padding: 15px 20px;
 
-    background: white;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.96);
+
     color: #111827;
 
     text-decoration: none;
 
-    font-size: 17px;
-    font-weight: bold;
+    font-size: 16px;
 
-    transition: 0.3s;
+    font-weight: 700;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.18);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
 }
+
+
+/* حركة الزر عند مرور الماوس */
 
 .link:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.28);
+
+    background: #ffffff;
 }
 
-footer {
-    margin-top: 35px;
+
+/* عند الضغط */
+
+.link:active {
+    transform: scale(0.97);
+}
+
+
+/* الأيقونة */
+
+.icon {
+    font-size: 22px;
+}
+
+
+/* =========================
+   Social
+========================= */
+
+.social {
+    margin-top: 28px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
 
     color: #94a3b8;
 
+    font-size: 14px;
+}
+
+.social a {
+    color: #cbd5e1;
+
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+.social a:hover {
+    color: white;
+}
+
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+    margin-top: 25px;
+
+    color: #64748b;
+
     font-size: 13px;
 }
+
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 25px 14px;
+    }
+
+    .logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile h1 {
+        font-size: 28px;
+    }
+
+    .link {
+        min-height: 58px;
+
+        font-size: 15px;
+    }
+}
+```
