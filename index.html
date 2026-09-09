@@ -1,120 +1,268 @@
-```html
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta name="description" content="SNOCS7 - جميع روابط المتجر في مكان واحد">
+  <title>Aura | Links</title>
 
-    <title>SNOCS7</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandGreen: "#72BA27",
+            brandDark: "#1F301F",
+            brandWhite: "#FFFFFF",
+          },
+
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
 
-    <div class="page">
+<body class="relative flex flex-col items-center min-h-screen selection:bg-brandGreen selection:text-brandDark">
 
-        <!-- اللوجو -->
-        <div class="profile">
+  <!-- =========================
+       Splash Screen
+  ========================== -->
 
-            <!-- غيّر الرابط ده لرابط صورتك -->
-            <img
-                src="https://placehold.co/200x200"
-                alt="SNOCS7 Logo"
-                class="logo"
-            >
+  <div id="splash-screen">
 
-            <h1>SNOCS7</h1>
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png"
+      alt="Aura Logo"
+      class="splash-logo"
+    />
 
-            <p>كل روابطنا في مكان واحد</p>
+    <span
+      class="text-brandGreen text-sm font-semibold tracking-widest mt-4 uppercase animate-pulse"
+    >
+      AURA
+    </span>
 
-        </div>
-
-
-        <!-- الروابط -->
-        <div class="links">
-
-            <a
-                href="https://example.com"
-                target="_blank"
-                class="link"
-            >
-                <span class="icon">🛍️</span>
-                <span>المتجر الإلكتروني</span>
-            </a>
+  </div>
 
 
-            <a
-                href="https://wa.me/201000000000"
-                target="_blank"
-                class="link"
-            >
-                <span class="icon">💬</span>
-                <span>تواصل معنا على WhatsApp</span>
-            </a>
+  <!-- =========================
+       Background Overlay
+  ========================== -->
+
+  <div class="bg-blur-overlay"></div>
 
 
-            <a
-                href="https://instagram.com/"
-                target="_blank"
-                class="link"
-            >
-                <span class="icon">📸</span>
-                <span>Instagram</span>
-            </a>
+  <!-- =========================
+       Main Content
+  ========================== -->
+
+  <main
+    class="relative z-10 w-full max-w-md mx-auto px-6 py-12 flex flex-col items-center min-h-screen justify-between"
+  >
+
+    <!-- Top Content Group -->
+
+    <div class="w-full flex flex-col items-center">
 
 
-            <a
-                href="https://facebook.com/"
-                target="_blank"
-                class="link"
-            >
-                <span class="icon">📘</span>
-                <span>Facebook</span>
-            </a>
+      <!-- =========================
+           Header
+      ========================== -->
 
+      <div class="text-center w-full mb-8">
 
-            <a
-                href="https://tiktok.com/"
-                target="_blank"
-                class="link"
-            >
-                <span class="icon">🎵</span>
-                <span>TikTok</span>
-            </a>
+        <!-- Mascot -->
+
+        <div class="mb-4 flex justify-center">
+
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png"
+            alt="Aura Mascot"
+            class="w-44 h-auto mascot-img drop-shadow-2xl opacity-95"
+          />
 
         </div>
 
 
-        <!-- السوشيال -->
-        <div class="social">
+        <!-- Brand Name -->
 
-            <a href="https://instagram.com/" target="_blank">
-                Instagram
-            </a>
+        <h1
+          class="text-5xl font-extrabold tracking-tight text-brandWhite mb-3 drop-shadow-lg animated-title"
+        >
+          aura
+        </h1>
 
-            <span>•</span>
 
-            <a href="https://facebook.com/" target="_blank">
-                Facebook
-            </a>
+        <!-- Description -->
+
+        <div class="text-center px-2 space-y-1.5 mt-2">
+
+          <p class="text-lg font-medium text-brandWhite drop-shadow-md">
+            Your style called. It wants Aura.
+          </p>
+
+          <p class="text-[15px] font-medium text-brandWhite/90 drop-shadow-md">
+            ✨ Minimal • Sustainable • Essentials •
+          </p>
+
+          <p class="text-[15px] font-medium text-brandWhite/90 drop-shadow-md">
+            Fashion Comfort meets everyday style.
+          </p>
 
         </div>
 
+      </div>
 
-        <footer>
-            © 2026 SNOCS7
-        </footer>
+
+      <!-- =========================
+           Links
+      ========================== -->
+
+      <div class="w-full space-y-4 mt-2">
+
+
+        <!-- WhatsApp -->
+
+        <a
+          href="#"
+          target="_blank"
+          class="pill-button w-full px-6 py-4 group"
+        >
+
+          <div class="flex-shrink-0 btn-icon w-8">
+
+            <i class="fa-brands fa-whatsapp"></i>
+
+          </div>
+
+
+          <div class="flex-1 flex flex-col justify-center text-center pr-8">
+
+            <div class="btn-text-primary text-[16px]">
+              Aura New Collection - VIP
+            </div>
+
+            <div class="btn-text-secondary">
+              WhatsApp Community • Free to join
+            </div>
+
+          </div>
+
+        </a>
+
+
+        <!-- Official Website -->
+
+        <a
+          href="#"
+          target="_blank"
+          class="pill-button w-full px-6 py-4 group"
+        >
+
+          <div class="flex-shrink-0 btn-icon w-8">
+
+            <i class="fa-solid fa-store"></i>
+
+          </div>
+
+
+          <div class="flex-1 flex flex-col justify-center text-center pr-8">
+
+            <div class="btn-text-primary text-[16px]">
+              Shop Official Website
+            </div>
+
+            <div class="btn-text-secondary">
+              Discover our latest essentials
+            </div>
+
+          </div>
+
+        </a>
+
+
+        <!-- Instagram -->
+
+        <a
+          href="#"
+          target="_blank"
+          class="pill-button w-full px-6 py-4 group"
+        >
+
+          <div class="flex-shrink-0 btn-icon w-8">
+
+            <i class="fa-brands fa-instagram"></i>
+
+          </div>
+
+
+          <div class="flex-1 flex flex-col justify-center text-center pr-8">
+
+            <div class="btn-text-primary text-[16px]">
+              Follow us on Instagram
+            </div>
+
+            <div class="btn-text-secondary">
+              Daily style inspiration
+            </div>
+
+          </div>
+
+        </a>
+
+      </div>
 
     </div>
 
 
-    <script src="script.js"></script>
+    <!-- =========================
+         Footer
+    ========================== -->
+
+    <footer class="mt-12 pb-4 w-full text-center">
+
+      <span
+        class="text-[11px] font-bold tracking-widest text-brandWhite/70 uppercase"
+      >
+        DEV BY ZEYAD
+      </span>
+
+    </footer>
+
+  </main>
+
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
 
 </body>
+
 </html>
-```
