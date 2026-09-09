@@ -1,236 +1,357 @@
-```css
 /* =========================
-   General
+   Body
 ========================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 body {
-    min-height: 100vh;
+  background-color: #1F301F;
 
-    font-family:
-        Arial,
-        Tahoma,
-        sans-serif;
+  background-image:
+    url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1000&auto=format&fit=crop");
+
+  background-size: cover;
+
+  background-position: center;
+
+  background-attachment: fixed;
+
+  color: #FFFFFF;
+
+  font-family: "Inter", sans-serif;
+
+  margin: 0;
+
+  padding: 0;
+
+  min-height: 100vh;
+
+  -webkit-font-smoothing: antialiased;
+
+  position: relative;
+}
+
+
+/* =========================
+   Background Blur
+========================= */
+
+.bg-blur-overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(31, 48, 31, 0.85) 0%,
+      rgba(31, 48, 31, 0.6) 100%
+    );
+
+  backdrop-filter: blur(25px);
+
+  -webkit-backdrop-filter: blur(25px);
+
+  z-index: 0;
+}
+
+
+/* =========================
+   Splash Screen
+========================= */
+
+#splash-screen {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: #1F301F;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 9999;
+
+  transition:
+    opacity 0.6s ease-out,
+    visibility 0.6s ease-out;
+}
+
+
+/* =========================
+   Splash Logo
+========================= */
+
+.splash-logo {
+  width: 90px;
+
+  height: auto;
+
+  animation:
+    splashPulse 1.5s infinite ease-in-out;
+}
+
+
+/* =========================
+   Splash Animation
+========================= */
+
+@keyframes splashPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.12);
+
+    opacity: 1;
+  }
+}
+
+
+/* =========================
+   Pill Buttons
+========================= */
+
+.pill-button {
+  background: rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.15);
+
+  border-radius: 9999px;
+
+  transition:
+    all 0.4s cubic-bezier(
+      0.25,
+      1,
+      0.5,
+      1
+    );
+
+  position: relative;
+
+  overflow: hidden;
+
+  display: flex;
+
+  align-items: center;
+
+  cursor: pointer;
+}
+
+
+/* =========================
+   Desktop Hover
+========================= */
+
+@media (hover: hover) {
+
+  .pill-button:hover {
+
+    transform:
+      translateY(-4px)
+      scale(1.02);
 
     background:
-        radial-gradient(
-            circle at top,
-            #293548,
-            #0f172a 55%,
-            #020617
-        );
+      rgba(255, 255, 255, 0.18);
 
-    color: #ffffff;
-
-    display: flex;
-    justify-content: center;
-
-    padding: 35px 15px;
-}
-
-
-/* =========================
-   Main Container
-========================= */
-
-.page {
-    width: 100%;
-    max-width: 500px;
-
-    text-align: center;
-}
-
-
-/* =========================
-   Profile
-========================= */
-
-.profile {
-    margin-bottom: 30px;
-}
-
-.logo {
-    width: 115px;
-    height: 115px;
-
-    object-fit: cover;
-
-    border-radius: 50%;
-
-    border: 3px solid rgba(255, 255, 255, 0.9);
-
-    margin-bottom: 18px;
+    border-color:
+      rgba(114, 186, 39, 0.6);
 
     box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.35);
-}
+      0 10px 25px -5px
+      rgba(31, 48, 31, 0.5),
 
-.profile h1 {
-    font-size: 32px;
+      0 0 15px
+      rgba(114, 186, 39, 0.25);
+  }
 
-    font-weight: 800;
-
-    letter-spacing: 1px;
-
-    margin-bottom: 8px;
-}
-
-.profile p {
-    color: #cbd5e1;
-
-    font-size: 15px;
 }
 
 
 /* =========================
-   Links
+   Touch / Click
 ========================= */
 
-.links {
-    display: flex;
+.pill-button:active {
 
-    flex-direction: column;
+  transform:
+    scale(0.96)
+    translateY(0);
 
-    gap: 14px;
-}
+  background:
+    rgba(255, 255, 255, 0.25);
 
-.link {
-    width: 100%;
+  box-shadow: none;
 
-    min-height: 62px;
-
-    padding: 15px 20px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 12px;
-
-    border-radius: 16px;
-
-    background: rgba(255, 255, 255, 0.96);
-
-    color: #111827;
-
-    text-decoration: none;
-
-    font-size: 16px;
-
-    font-weight: 700;
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.18);
-
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        background 0.25s ease;
-}
-
-
-/* حركة الزر عند مرور الماوس */
-
-.link:hover {
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 14px 30px rgba(0, 0, 0, 0.28);
-
-    background: #ffffff;
-}
-
-
-/* عند الضغط */
-
-.link:active {
-    transform: scale(0.97);
-}
-
-
-/* الأيقونة */
-
-.icon {
-    font-size: 22px;
+  transition:
+    all 0.1s ease;
 }
 
 
 /* =========================
-   Social
+   Primary Button Text
 ========================= */
 
-.social {
-    margin-top: 28px;
+.btn-text-primary {
 
-    display: flex;
+  color: #72BA27;
 
-    justify-content: center;
+  font-weight: 600;
 
-    align-items: center;
-
-    gap: 10px;
-
-    color: #94a3b8;
-
-    font-size: 14px;
-}
-
-.social a {
-    color: #cbd5e1;
-
-    text-decoration: none;
-
-    transition: 0.2s;
-}
-
-.social a:hover {
-    color: white;
+  line-height: 1.2;
 }
 
 
 /* =========================
-   Footer
+   Secondary Button Text
 ========================= */
 
-footer {
-    margin-top: 25px;
+.btn-text-secondary {
 
-    color: #64748b;
+  color:
+    rgba(114, 186, 39, 0.75);
 
-    font-size: 13px;
+  font-size: 0.75rem;
+
+  margin-top: 2px;
 }
 
 
 /* =========================
-   Mobile
+   Icons
 ========================= */
 
-@media (max-width: 480px) {
+.btn-icon {
 
-    body {
-        padding: 25px 14px;
-    }
+  color: #72BA27;
 
-    .logo {
-        width: 100px;
-        height: 100px;
-    }
+  font-size: 1.15rem;
 
-    .profile h1 {
-        font-size: 28px;
-    }
+  display: flex;
 
-    .link {
-        min-height: 58px;
+  align-items: center;
 
-        font-size: 15px;
-    }
+  justify-content: center;
+
+  transition:
+    transform 0.3s ease;
 }
-```
+
+
+/* =========================
+   Icon Hover
+========================= */
+
+.pill-button:hover .btn-icon {
+
+  transform:
+    scale(1.15)
+    rotate(-5deg);
+
+  color: #FFFFFF;
+}
+
+
+/* =========================
+   Mascot Animation
+========================= */
+
+@keyframes float {
+
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+
+}
+
+
+.mascot-img {
+
+  animation:
+    float 6s ease-in-out infinite;
+}
+
+
+/* =========================
+   Title Animation
+========================= */
+
+@keyframes titlePulse {
+
+  0% {
+
+    transform: scale(1);
+
+    opacity: 0.9;
+
+    text-shadow:
+      0 0 0px
+      rgba(114, 186, 39, 0);
+  }
+
+
+  50% {
+
+    transform: scale(1.03);
+
+    opacity: 1;
+
+    text-shadow:
+      0 0 15px
+      rgba(114, 186, 39, 0.4);
+  }
+
+
+  100% {
+
+    transform: scale(1);
+
+    opacity: 0.9;
+
+    text-shadow:
+      0 0 0px
+      rgba(114, 186, 39, 0);
+  }
+
+}
+
+
+/* =========================
+   Animated Title
+========================= */
+
+.animated-title {
+
+  display: inline-block;
+
+  animation:
+    titlePulse 4s ease-in-out infinite;
+}
