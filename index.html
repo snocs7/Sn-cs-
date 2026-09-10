@@ -2563,6 +2563,8 @@ El Lebeini, Haram, behind Siag Hotel.
        نحول الصور الكبيرة إلى JPEG مضغوط بعرض أقصى 1600px.
        هذا يقلل حجم Base64 ويحسن وصول الصورة إلى Apps Script.
     */
+    // الصورة يتم تحويلها إلى JPEG مضغوط قبل إرسالها.
+    // هذا يقلل حجم الطلب ويجعل رفع الصورة إلى Google Drive أكثر موثوقية.
     function compressImageForUpload(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -2571,16 +2573,22 @@ El Lebeini, Haram, behind Siag Hotel.
           const img = new Image();
 
           img.onload = () => {
-            const MAX_WIDTH = 1600;
-            const scale = Math.min(1, MAX_WIDTH / img.width);
-            const width = Math.max(1, Math.round(img.width * scale));
-            const height = Math.max(1, Math.round(img.height * scale));
+            // نقلل الصورة بقوة حتى لا يتخطى طلب Google Apps Script الحجم المناسب.
+            const MAX_WIDTH = 1000;
+            const MAX_HEIGHT = 1000;
+
+            let width = img.naturalWidth || img.width;
+            let height = img.naturalHeight || img.height;
+
+            const scale = Math.min(1, MAX_WIDTH / width, MAX_HEIGHT / height);
+            width = Math.max(1, Math.round(width * scale));
+            height = Math.max(1, Math.round(height * scale));
 
             const canvas = document.createElement('canvas');
             canvas.width = width;
             canvas.height = height;
 
-            const ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext('2d', { alpha: false });
             if (!ctx) {
               reject(new Error('Canvas is not supported'));
               return;
@@ -2590,10 +2598,28 @@ El Lebeini, Haram, behind Siag Hotel.
             ctx.fillRect(0, 0, width, height);
             ctx.drawImage(img, 0, 0, width, height);
 
-            let dataUrl = canvas.toDataURL('image/jpeg', 0.78);
+            // نحاول إبقاء الصورة تحت حوالي 1.5MB كـ Data URL.
+            let dataUrl = canvas.toDataURL('image/jpeg', 0.65);
 
-            if (dataUrl.length > 3_500_000) {
-              dataUrl = canvas.toDataURL('image/jpeg', 0.60);
+            if (dataUrl.length > 2000000) {
+              dataUrl = canvas.toDataURL('image/jpeg', 0.50);
+            }
+
+            if (dataUrl.length > 2000000) {
+              // تصغير إضافي إذا كانت الصورة ما زالت كبيرة.
+              const smallerCanvas = document.createElement('canvas');
+              const smallScale = 0.75;
+              smallerCanvas.width = Math.max(1, Math.round(width * smallScale));
+              smallerCanvas.height = Math.max(1, Math.round(height * smallScale));
+              const smallCtx = smallerCanvas.getContext('2d', { alpha: false });
+              if (!smallCtx) {
+                reject(new Error('Canvas is not supported'));
+                return;
+              }
+              smallCtx.fillStyle = '#ffffff';
+              smallCtx.fillRect(0, 0, smallerCanvas.width, smallerCanvas.height);
+              smallCtx.drawImage(img, 0, 0, smallerCanvas.width, smallerCanvas.height);
+              dataUrl = smallerCanvas.toDataURL('image/jpeg', 0.45);
             }
 
             resolve({
@@ -2707,7 +2733,11 @@ El Lebeini, Haram, behind Siag Hotel.
           const compressed = await compressImageForUpload(file);
           imageBase64 = compressed.dataUrl;
           imageType = compressed.mimeType;
-          imageName = file.name;
+          imageName = (file.name.replace(/\.[^/.]+$/, '') || 'review-image') + '.jpg';
+
+          if (!imageBase64 || imageBase64.length > 2200000) {
+            throw new Error('Compressed image is still too large');
+          }
         } catch (e) {
           console.error('Error compressing image:', e);
           submitBtn.disabled = false;
@@ -2733,10 +2763,12 @@ El Lebeini, Haram, behind Siag Hotel.
           branch: branch,
           rating: String(rating),
           review: text,
-          // مهم: اسم المتغير يجب أن يطابق e.parameter.imageBase64 في Google Apps Script
+          // اسم الحقل يجب أن يطابق Apps Script:
+          // e.parameter.imageBase64
           imageBase64: imageBase64,
           imageName: imageName,
-          imageType: imageType
+          imageType: imageType,
+          hasImage: imageBase64 ? '1' : '0'
         });
 
         const response = await fetch(GOOGLE_SCRIPT_URL, {
