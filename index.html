@@ -2266,6 +2266,15 @@ El Lebeini, Haram, behind Siag Hotel.
         <textarea id="rev-text" class="custom-input h-24 resize-none" placeholder="..." required></textarea>
       </div>
 
+      <!-- Attach Image (Optional - Admin only) -->
+      <div>
+        <label class="block text-xs text-brandWhite/80 mb-1 ml-1">
+          <span data-en="Attach Image (Optional)" data-ar="إرفاق صورة (اختياري)">Attach Image (Optional)</span>
+          <span class="text-[10px] text-brandWhite/50 block font-normal" data-en="Visible only to Snöcs management" data-ar="مرئية فقط لإدارة Snöcs ولن تظهر للعلن">Visible only to Snöcs management</span>
+        </label>
+        <input type="file" id="rev-image" accept="image/*" class="custom-input text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brandGreen file:text-brandDark hover:file:brightness-110 cursor-pointer" />
+      </div>
+
     </div>
 
     <!-- Success Message -->
@@ -2587,6 +2596,7 @@ El Lebeini, Haram, behind Siag Hotel.
       const phoneInput = document.getElementById('rev-phone');
       const branchInput = document.getElementById('rev-branch');
       const textInput = document.getElementById('rev-text');
+      const imageInput = document.getElementById('rev-image');
       const errorMsg = document.getElementById('phone-error');
       const successMsg = document.getElementById('rev-success');
       const submitBtn = document.getElementById('rev-submit-btn');
@@ -2617,6 +2627,21 @@ El Lebeini, Haram, behind Siag Hotel.
       submitBtn.disabled = true;
       submitBtn.style.opacity = '0.5';
 
+      // قراءة الصورة كـ Base64 إن وجدت
+      let imageBase64 = '';
+      if (imageInput && imageInput.files && imageInput.files[0]) {
+        try {
+          imageBase64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(imageInput.files[0]);
+          });
+        } catch (e) {
+          console.error('Error reading image file:', e);
+        }
+      }
+
       try {
         /*
           نستخدم URLSearchParams بدل JSON.
@@ -2629,7 +2654,8 @@ El Lebeini, Haram, behind Siag Hotel.
           phone: phone,
           branch: branch,
           rating: String(rating),
-          review: text
+          review: text,
+          image: imageBase64
         });
 
         const response = await fetch(GOOGLE_SCRIPT_URL, {
@@ -2654,6 +2680,7 @@ El Lebeini, Haram, behind Siag Hotel.
         nameInput.value = '';
         phoneInput.value = '';
         textInput.value = '';
+        if (imageInput) imageInput.value = '';
         window.setRating(5);
 
         // إغلاق النافذة بعد ثانيتين
