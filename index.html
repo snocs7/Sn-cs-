@@ -2563,8 +2563,6 @@ El Lebeini, Haram, behind Siag Hotel.
        نحول الصور الكبيرة إلى JPEG مضغوط بعرض أقصى 1600px.
        هذا يقلل حجم Base64 ويحسن وصول الصورة إلى Apps Script.
     */
-    // الصورة يتم تحويلها إلى JPEG مضغوط قبل إرسالها.
-    // هذا يقلل حجم الطلب ويجعل رفع الصورة إلى Google Drive أكثر موثوقية.
     function compressImageForUpload(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -2709,7 +2707,7 @@ El Lebeini, Haram, behind Siag Hotel.
           const compressed = await compressImageForUpload(file);
           imageBase64 = compressed.dataUrl;
           imageType = compressed.mimeType;
-          imageName = (file.name.replace(/\.[^/.]+$/, '') || 'review-image') + '.jpg';
+          imageName = file.name;
         } catch (e) {
           console.error('Error compressing image:', e);
           submitBtn.disabled = false;
@@ -2735,8 +2733,7 @@ El Lebeini, Haram, behind Siag Hotel.
           branch: branch,
           rating: String(rating),
           review: text,
-          // اسم الحقل يجب أن يطابق Apps Script:
-          // e.parameter.imageBase64
+          // مهم: اسم المتغير يجب أن يطابق e.parameter.imageBase64 في Google Apps Script
           imageBase64: imageBase64,
           imageName: imageName,
           imageType: imageType
