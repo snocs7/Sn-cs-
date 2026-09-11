@@ -2265,15 +2265,7 @@ El Lebeini, Haram, behind Siag Hotel.
         <label class="block text-xs text-brandWhite/80 mb-1 ml-1" data-en="Your Review" data-ar="رأيك">Your Review</label>
         <textarea id="rev-text" class="custom-input h-24 resize-none" placeholder="..." required></textarea>
       </div>
-
-      <!-- Attach Image (Optional - Admin only) -->
-      <div>
-        <label class="block text-xs text-brandWhite/80 mb-1 ml-1">
-          <span data-en="Attach Image (Optional)" data-ar="إرفاق صورة (اختياري)">Attach Image (Optional)</span>
-          <span class="text-[10px] text-brandWhite/50 block font-normal" data-en="Visible only to Snöcs management" data-ar="مرئية فقط لإدارة Snöcs ولن تظهر للعلن">Visible only to Snöcs management</span>
-        </label>
-        <input type="file" id="rev-image" accept="image/*" class="custom-input text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brandGreen file:text-brandDark hover:file:brightness-110 cursor-pointer" />
-      </div>
+</div>
 
     </div>
 
@@ -2556,111 +2548,6 @@ El Lebeini, Haram, behind Siag Hotel.
 
       return map[engBranch] || engBranch;
     }
-
-    /* ==================================================
-       ضغط الصورة قبل الإرسال
-       ==================================================
-       نحول الصور الكبيرة إلى JPEG مضغوط بعرض أقصى 1600px.
-       هذا يقلل حجم Base64 ويحسن وصول الصورة إلى Apps Script.
-    */
-    // الصورة يتم تحويلها إلى JPEG مضغوط قبل إرسالها.
-    // هذا يقلل حجم الطلب ويجعل رفع الصورة إلى Google Drive أكثر موثوقية.
-    function compressImageForUpload(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          const img = new Image();
-
-          img.onload = () => {
-            /*
-              مهم:
-              الصورة ستدخل داخل POST body.
-              لذلك نخليها صغيرة جدًا (حوالي 20KB-30KB)
-              حتى لا تضيع قيمة الصورة أثناء إرسال الطلب.
-            */
-            const TARGET_LENGTH = 35000;
-            const MAX_SIDE = 600;
-
-            let width = img.naturalWidth || img.width;
-            let height = img.naturalHeight || img.height;
-
-            let scale = Math.min(
-              1,
-              MAX_SIDE / width,
-              MAX_SIDE / height
-            );
-
-            width = Math.max(1, Math.round(width * scale));
-            height = Math.max(1, Math.round(height * scale));
-
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d", { alpha: false });
-
-            if (!ctx) {
-              reject(new Error("Canvas is not supported"));
-              return;
-            }
-
-            const render = () => {
-              canvas.width = width;
-              canvas.height = height;
-
-              ctx.fillStyle = "#ffffff";
-              ctx.fillRect(0, 0, width, height);
-              ctx.drawImage(img, 0, 0, width, height);
-
-              let best = canvas.toDataURL("image/jpeg", 0.45);
-
-              const qualities = [
-                0.40, 0.35, 0.30, 0.25, 0.20, 0.16, 0.12
-              ];
-
-              for (const quality of qualities) {
-                const candidate =
-                  canvas.toDataURL("image/jpeg", quality);
-
-                if (candidate.length < best.length) {
-                  best = candidate;
-                }
-
-                if (candidate.length <= TARGET_LENGTH) {
-                  best = candidate;
-                  break;
-                }
-              }
-
-              // لو ما زالت كبيرة، نصغر الأبعاد ونحاول مرة أخرى.
-              if (best.length > TARGET_LENGTH && width > 300) {
-                width = Math.round(width * 0.75);
-                height = Math.round(height * 0.75);
-                render();
-                return;
-              }
-
-              if (!best || best.length > 60000) {
-                reject(new Error("Could not compress image enough"));
-                return;
-              }
-
-              resolve({
-                dataUrl: best,
-                mimeType: "image/jpeg"
-              });
-            };
-
-            render();
-          };
-
-          img.onerror = () => reject(new Error("Invalid image"));
-          img.src = reader.result;
-        };
-
-        reader.onerror = () => reject(new Error("Could not read image"));
-        reader.readAsDataURL(file);
-      });
-    }
-
     /* ==================================================
        جلب الآراء من Google Sheet
        ================================================== */
@@ -2700,7 +2587,6 @@ El Lebeini, Haram, behind Siag Hotel.
       const phoneInput = document.getElementById('rev-phone');
       const branchInput = document.getElementById('rev-branch');
       const textInput = document.getElementById('rev-text');
-      const imageInput = document.getElementById('rev-image');
       const errorMsg = document.getElementById('phone-error');
       const successMsg = document.getElementById('rev-success');
       const submitBtn = document.getElementById('rev-submit-btn');
@@ -2730,94 +2616,7 @@ El Lebeini, Haram, behind Siag Hotel.
 
       submitBtn.disabled = true;
       submitBtn.style.opacity = '0.5';
-
-      // ==================================================
-      // OPTIONAL IMAGE
-      // ==================================================
-      // نضغط الصورة قبل إرسالها حتى لا يكون حجم الطلب كبيرًا.
-      // يتم إرسالها كـ Data URL داخل المتغير image.
-      let imageBase64 = '';
-      let imageName = '';
-      let imageType = '';
-
-      if (imageInput && imageInput.files && imageInput.files[0]) {
-        const file = imageInput.files[0];
-
-        if (file.size > 10 * 1024 * 1024) {
-          submitBtn.disabled = false;
-          submitBtn.style.opacity = '1';
-          alert(currentLang === 'ar'
-            ? 'حجم الصورة كبير جدًا. اختر صورة أقل من 10 ميجابايت.'
-            : 'The image is too large. Please choose an image smaller than 10 MB.'
-          );
-          return;
-        }
-
-        try {
-          const compressed = await compressImageForUpload(file);
-          imageBase64 = compressed.dataUrl;
-          imageType = compressed.mimeType;
-          imageName = (file.name.replace(/\.[^/.]+$/, '') || 'review-image') + '.jpg';
-
-          if (!imageBase64 || imageBase64.length > 60000) {
-            throw new Error('Compressed image is still too large');
-          }
-        } catch (e) {
-          console.error('Error compressing image:', e);
-          submitBtn.disabled = false;
-          submitBtn.style.opacity = '1';
-          alert(currentLang === 'ar'
-            ? 'تعذر تجهيز الصورة. حاول بصورة أخرى.'
-            : 'Could not prepare the image. Please try another image.'
-          );
-          return;
-        }
-      }
-
-      try {
-        /*
-          نستخدم URLSearchParams بدل JSON.
-          ده يخلي الطلب بسيط ومناسب للعمل مباشرة من GitHub Pages
-          إلى Google Apps Script بدون الحاجة إلى Firebase.
-        */
-        const payload = {
-          action: 'addReview',
-          name: name,
-          phone: phone,
-          branch: branch,
-          rating: String(rating),
-          review: text,
-          imageBase64: imageBase64,
-          imageName: imageName,
-          imageType: imageType,
-          hasImage: imageBase64 ? '1' : '0'
-        };
-
-        /*
-          نرسل JSON كنص عادي.
-          Apps Script سيقرأه من:
-          e.postData.contents
-
-          وهذا أكثر ثباتًا من وضع Base64 داخل e.parameter.
-        */
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify(payload),
-          mode: 'no-cors'
-        });
-
-        // إظهار رسالة النجاح
-        successMsg.classList.remove('hidden');
-
-        // تفريغ الحقول بعد النجاح وإعادة النجوم لـ 5
-        nameInput.value = '';
-        phoneInput.value = '';
-        textInput.value = '';
-        if (imageInput) imageInput.value = '';
-        window.setRating(5);
+window.setRating(5);
 
         // إغلاق النافذة بعد ثانيتين
         setTimeout(() => {
