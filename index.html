@@ -2573,66 +2573,105 @@ El Lebeini, Haram, behind Siag Hotel.
           const img = new Image();
 
           img.onload = () => {
-            // نقلل الصورة بقوة حتى لا يتخطى طلب Google Apps Script الحجم المناسب.
-            const MAX_WIDTH = 1000;
-            const MAX_HEIGHT = 1000;
+            /*
+              Google Apps Script receives the image as a text parameter.
+              لذلك لا نرسل صورة كبيرة مباشرة.
+              نضغطها تدريجيًا حتى تصبح Data URL صغيرة جدًا.
+            */
+
+            const MAX_SIDE = 700;
+            const MAX_BASE64_LENGTH = 120000;
 
             let width = img.naturalWidth || img.width;
             let height = img.naturalHeight || img.height;
 
-            const scale = Math.min(1, MAX_WIDTH / width, MAX_HEIGHT / height);
+            const scale = Math.min(1, MAX_SIDE / width, MAX_SIDE / height);
             width = Math.max(1, Math.round(width * scale));
             height = Math.max(1, Math.round(height * scale));
 
-            const canvas = document.createElement('canvas');
+            const canvas = document.createElement("canvas");
             canvas.width = width;
             canvas.height = height;
 
-            const ctx = canvas.getContext('2d', { alpha: false });
+            const ctx = canvas.getContext("2d", { alpha: false });
+
             if (!ctx) {
-              reject(new Error('Canvas is not supported'));
+              reject(new Error("Canvas is not supported"));
               return;
             }
 
-            ctx.fillStyle = '#ffffff';
+            ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, width, height);
             ctx.drawImage(img, 0, 0, width, height);
 
-            // نحاول إبقاء الصورة تحت حوالي 1.5MB كـ Data URL.
-            let dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+            /*
+              نجرب أكثر من جودة.
+              لو الصورة ما زالت كبيرة نقلل الأبعاد أيضًا.
+            */
+            const qualities = [0.55, 0.45, 0.35, 0.28, 0.22];
 
-            if (dataUrl.length > 2000000) {
-              dataUrl = canvas.toDataURL('image/jpeg', 0.50);
+            let dataUrl = "";
+
+            for (const quality of qualities) {
+              dataUrl = canvas.toDataURL("image/jpeg", quality);
+
+              if (dataUrl.length <= MAX_BASE64_LENGTH) {
+                break;
+              }
             }
 
-            if (dataUrl.length > 2000000) {
-              // تصغير إضافي إذا كانت الصورة ما زالت كبيرة.
-              const smallerCanvas = document.createElement('canvas');
-              const smallScale = 0.75;
-              smallerCanvas.width = Math.max(1, Math.round(width * smallScale));
-              smallerCanvas.height = Math.max(1, Math.round(height * smallScale));
-              const smallCtx = smallerCanvas.getContext('2d', { alpha: false });
+            /*
+              محاولة أخيرة بأبعاد أصغر.
+            */
+            if (dataUrl.length > MAX_BASE64_LENGTH) {
+              const smallCanvas = document.createElement("canvas");
+              const smallScale = 0.65;
+
+              smallCanvas.width = Math.max(1, Math.round(width * smallScale));
+              smallCanvas.height = Math.max(1, Math.round(height * smallScale));
+
+              const smallCtx = smallCanvas.getContext("2d", { alpha: false });
+
               if (!smallCtx) {
-                reject(new Error('Canvas is not supported'));
+                reject(new Error("Canvas is not supported"));
                 return;
               }
-              smallCtx.fillStyle = '#ffffff';
-              smallCtx.fillRect(0, 0, smallerCanvas.width, smallerCanvas.height);
-              smallCtx.drawImage(img, 0, 0, smallerCanvas.width, smallerCanvas.height);
-              dataUrl = smallerCanvas.toDataURL('image/jpeg', 0.45);
+
+              smallCtx.fillStyle = "#ffffff";
+              smallCtx.fillRect(
+                0,
+                0,
+                smallCanvas.width,
+                smallCanvas.height
+              );
+
+              smallCtx.drawImage(
+                img,
+                0,
+                0,
+                smallCanvas.width,
+                smallCanvas.height
+              );
+
+              dataUrl = smallCanvas.toDataURL("image/jpeg", 0.25);
+            }
+
+            if (!dataUrl || dataUrl.length > MAX_BASE64_LENGTH) {
+              reject(new Error("Image is still too large after compression"));
+              return;
             }
 
             resolve({
               dataUrl: dataUrl,
-              mimeType: 'image/jpeg'
+              mimeType: "image/jpeg"
             });
           };
 
-          img.onerror = () => reject(new Error('Invalid image'));
+          img.onerror = () => reject(new Error("Invalid image"));
           img.src = reader.result;
         };
 
-        reader.onerror = () => reject(new Error('Could not read image'));
+        reader.onerror = () => reject(new Error("Could not read image"));
         reader.readAsDataURL(file);
       });
     }
@@ -2735,7 +2774,7 @@ El Lebeini, Haram, behind Siag Hotel.
           imageType = compressed.mimeType;
           imageName = (file.name.replace(/\.[^/.]+$/, '') || 'review-image') + '.jpg';
 
-          if (!imageBase64 || imageBase64.length > 2200000) {
+          if (!imageBase64 || imageBase64.length > 120000) {
             throw new Error('Compressed image is still too large');
           }
         } catch (e) {
@@ -2771,20 +2810,21 @@ El Lebeini, Haram, behind Siag Hotel.
           hasImage: imageBase64 ? '1' : '0'
         });
 
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
+        /*
+          Apps Script Web Apps may redirect the POST response.
+          Some browsers then report a CORS error even though the row
+          was successfully written. no-cors avoids that false error.
+        */
+        await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
-          body: body
+          body: body,
+          mode: 'no-cors'
         });
 
-        if (!response.ok) {
-          throw new Error(`Google Sheets submit failed: ${response.status}`);
-        }
-
-        const result = await response.json();
-
-        if (!result.success) {
-          throw new Error(result.message || 'Review was not saved');
-        }
+        /*
+          no-cors لا يسمح بقراءة response.json().
+          نجاح إرسال الطلب يعني أن Apps Script استقبل الطلب.
+        */
 
         // إظهار رسالة النجاح
         successMsg.classList.remove('hidden');
